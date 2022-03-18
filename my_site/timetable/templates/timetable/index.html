@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Страница расписания{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Добро пожаловать в ваше расписание</h1>
+</div>
+
+{%for item in data%}
+<p>{{item}}</p>
+{%endfor%}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Рейтинг преподователей{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Добро пожаловать в рейтинг преподователей</h1>
+</div>
+<a class="btn btn-primary" href="{% url 'create_rating' %}" role="button">Оценить преподователя</a>
+{{teacher_grade}}
+{{users}}
+{{teachers}}
+{%for item in teachers%}
+<p>{{item.username}}</p>
+{%endfor%}
+{%for item in teacher_grade%}
+<p>{{item}} : {{teacher_grade["prepod"]}}</p>
+{%endfor%}
+{% endblock %}
