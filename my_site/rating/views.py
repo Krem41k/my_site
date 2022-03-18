@@ -30,8 +30,7 @@ class TeacherListView(ListView):
             print(avg_grades)
             print(f"ваша средняя оценка: {statistics.fmean(temp)}")
 
-    extra_context = {'teacher_grade': avg_grades}
-    print(extra_context)
+    extra_context = {'teacher_grade': avg_grades.items()}
 
     def get_queryset(self):
         # peoples = CustomUser.objects.filter()

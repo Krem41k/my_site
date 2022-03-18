@@ -13,7 +13,8 @@
 {%for item in teachers%}
 <p>{{item.username}}</p>
 {%endfor%}
-{%for item in teacher_grade%}
-<p>{{item}} : {{teacher_grade["prepod"]}}</p>
+<b>Список средних оценок</b>
+{%for teacher, grade in teacher_grade%}
+<p>{{teacher}}: {{grade}}</p>
 {%endfor%}
 {% endblock %}
