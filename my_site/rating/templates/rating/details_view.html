@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Рейтинг преподователей{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Рейтинг пользователя</h1>
+</div>
+<b>Комментарии о пользователе</b>
+{%for item in data%}
+<p>{{item.comment}}</p>
+{%endfor%}
+{% endblock %}

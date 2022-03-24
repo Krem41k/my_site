@@ -1,12 +1,8 @@
 import statistics
 
 from django.shortcuts import render
-
-
-# def index(request):
-#     return render(request, 'rating/index.html')
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 
 from main.models import CustomUser
 from .models import Rating
@@ -15,42 +11,24 @@ from .models import Rating
 class TeacherListView(ListView):
     model = Rating
     template_name = 'rating/index.html'
-    context_object_name = 'teachers'
+    context_object_name = 'users'
     avg_grades = {}
     peoples = CustomUser.objects.all()
-    temp = []
+    temp_for_grade = []
     for p in peoples:
-        temp.clear()
+        temp_for_grade.clear()
         grades = p.rating_set.all()
         print(grades)
         for g in grades:
-            temp.append(g.grade)
-        if len(temp) > 0:
-            avg_grades[p.username] = statistics.fmean(temp)
+            temp_for_grade.append(g.grade)
+        if len(temp_for_grade) > 0:
+            avg_grades[p.username] = statistics.fmean(temp_for_grade)
             print(avg_grades)
-            print(f"ваша средняя оценка: {statistics.fmean(temp)}")
 
-    extra_context = {'teacher_grade': avg_grades.items()}
+    extra_context = {'user_rating': avg_grades.items()}
 
     def get_queryset(self):
-        # peoples = CustomUser.objects.filter()
-        # temp = []
-        # for p in peoples:
-        #     temp.clear()
-        #     grades = p.rating_set.all()
-        #     print(grades)
-        #     for g in grades:
-        #         temp.append(g.grade)
-        #     if len(temp) > 0:
-        #         print(f"ваша средняя оценка: {statistics.fmean(temp)}")
-
-        # return Rating.objects.filter(user__is_teacher=True)
-        return CustomUser.objects.all()
-
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super(TeacherListView, self).get_context_data(**kwargs)
-    #     context['avg_grade'] = self.rating_set.all()
-    #     return context
+        return Rating.objects.all()
 
 
 class RatingCreateView(CreateView):
@@ -58,3 +36,14 @@ class RatingCreateView(CreateView):
     template_name = 'rating/create_rating.html'
     fields = ['grade', 'comment', 'user']
     success_url = reverse_lazy('rating')
+
+
+# class RatingDetailView(DetailView):
+#     model = Rating
+#     template_name = 'rating/details_view.html'
+#     context_object_name = 'user_rating'
+
+def rating_detail(request, user):
+    u = Rating.objects.filter(user__username=user)
+
+    return render(request, 'rating/details_view.html', {'data': u})

@@ -4,17 +4,12 @@
 
 {% block content %}
 <div class="features">
-    <h1>Добро пожаловать в рейтинг преподователей</h1>
+    <h1>Добро пожаловать на рейтинг пользователей</h1>
 </div>
-<a class="btn btn-primary" href="{% url 'create_rating' %}" role="button">Оценить преподователя</a>
-{{teacher_grade}}
-{{users}}
-{{teachers}}
-{%for item in teachers%}
-<p>{{item.username}}</p>
-{%endfor%}
+<a class="btn btn-primary" href="{% url 'create_rating' %}" role="button">Оценить пользователя</a>
+<br>
 <b>Список средних оценок</b>
-{%for teacher, grade in teacher_grade%}
-<p>{{teacher}}: {{grade}}</p>
+{%for user, rating in user_rating%}
+<p><a href="{% url 'detail_rating' user %}"> {{user}}</a> : {{rating}} </p>
 {%endfor%}
 {% endblock %}
