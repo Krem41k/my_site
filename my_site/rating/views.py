@@ -1,34 +1,37 @@
 import statistics
 
 from django.shortcuts import render
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
 
 from main.models import CustomUser
 from .models import Rating
 
 
-class TeacherListView(ListView):
-    model = Rating
-    template_name = 'rating/index.html'
-    context_object_name = 'users'
+def avg():
     avg_grades = {}
     peoples = CustomUser.objects.all()
     temp_for_grade = []
     for p in peoples:
         temp_for_grade.clear()
         grades = p.rating_set.all()
-        print(grades)
         for g in grades:
             temp_for_grade.append(g.grade)
         if len(temp_for_grade) > 0:
             avg_grades[p.username] = statistics.fmean(temp_for_grade)
-            print(avg_grades)
+    return avg_grades
 
-    extra_context = {'user_rating': avg_grades.items()}
 
-    def get_queryset(self):
-        return Rating.objects.all()
+class TeacherListView(ListView):
+    model = Rating
+    template_name = 'rating/index.html'
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['avg_grades'] = avg()
+        print(context['avg_grades'])
+        return context
 
 
 class RatingCreateView(CreateView):
@@ -38,12 +41,6 @@ class RatingCreateView(CreateView):
     success_url = reverse_lazy('rating')
 
 
-# class RatingDetailView(DetailView):
-#     model = Rating
-#     template_name = 'rating/details_view.html'
-#     context_object_name = 'user_rating'
-
 def rating_detail(request, user):
     u = Rating.objects.filter(user__username=user)
-
     return render(request, 'rating/details_view.html', {'data': u})
