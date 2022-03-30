@@ -14,9 +14,19 @@ class RatingModelTest(TestCase):
         Rating.objects.create(grade=5, comment='great', user=user)
 
     def test_grade_label(self):
-        rating = Rating.objects.get(id=1)
-        field_label = rating._meta.get_field('grade').verbose_name
+        author = Rating.objects.get(id=1)
+        field_label = author._meta.get_field('grade').verbose_name
         self.assertEquals(field_label, 'grade')
+
+    def test_comment_label(self):
+        author = Rating.objects.get(id=1)
+        field_label = author._meta.get_field('comment').verbose_name
+        self.assertEquals(field_label, 'comment')
+
+    def test_user_label(self):
+        author = Rating.objects.get(id=1)
+        field_label = author._meta.get_field('user').verbose_name
+        self.assertEquals(field_label, 'user')
 
     def test_grade_value(self):
         rating = Rating.objects.get(id=1)
@@ -62,3 +72,48 @@ class RatingModelTest(TestCase):
         rating = Rating.objects.get(id=1)
         field_value = rating.user.group
         self.assertEquals(field_value, 'АА-87')
+
+    def test_grade_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.grade
+        self.assertNotEqual(field_value, 2)
+
+    def test_comment_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.comment
+        self.assertNotEqual(field_value, 'gr')
+
+    def test_rating_username_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.username
+        self.assertNotEqual(field_value, 'testsdfg')
+
+    def test_rating_password_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.password
+        self.assertNotEqual(field_value, 'sadg')
+
+    def test_rating_email_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.email
+        self.assertNotEqual(field_value, 'tesasdf@mail.ru')
+
+    def test_rating_is_teacher_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.is_teacher
+        self.assertNotEqual(field_value, False)
+
+    def test_rating_university_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.university
+        self.assertNotEqual(field_value, 'НГУ')
+
+    def test_rating_faculty_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.faculty
+        self.assertNotEqual(field_value, 'РЭФ')
+
+    def test_rating_group_false_value(self):
+        rating = Rating.objects.get(id=1)
+        field_value = rating.user.group
+        self.assertNotEqual(field_value, 'АА-88')
