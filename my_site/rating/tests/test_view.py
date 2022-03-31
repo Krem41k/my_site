@@ -33,9 +33,9 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_url_detail_rating_accessible_by_name(self):
-        response = self.client.get(reverse('detail_rating', kwargs={'user': "testman"}))
+        response = self.client.get(reverse('detail_rating', kwargs={'user': "username"}))
         self.assertEqual(response.status_code, 200)
 
     def test_detail_rating_view_uses_correct_template(self):
-        response = self.client.get(reverse('detail_rating', kwargs={'user': "testman"}))
+        response = self.client.get(reverse('detail_rating', kwargs={'user': "username"}))
         self.assertTemplateUsed(response, 'rating/details_view.html')

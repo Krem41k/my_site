@@ -35,7 +35,6 @@ class RatingCreateView(CreateView):
 
 def rating_detail(request, user):
     comments = Rating.objects.filter(user__username=user)
-    u = CustomUser.objects.filter(username=user).first()
-    avg_grade = avg().get(u.username)
+    avg_grade = avg().get(user)
     return render(request, 'rating/details_view.html', {'comments': comments, 'avg_grade': avg_grade,
-                                                        'username': u.username})
+                                                        'username': user})
