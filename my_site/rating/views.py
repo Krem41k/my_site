@@ -10,7 +10,7 @@ from .models import Rating
 
 def avg():
     avg_grades = {}
-    peoples = CustomUser.objects.all()
+    peoples = CustomUser.objects.all().order_by('username')
     temp_for_grade = []
     for p in peoples:
         temp_for_grade.clear()
@@ -22,15 +22,8 @@ def avg():
     return avg_grades
 
 
-class TeacherListView(ListView):
-    model = Rating
-    template_name = 'rating/index.html'
-    context_object_name = 'users'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['avg_grades'] = avg()
-        return context
+def rating_list(request):
+    return render(request, 'rating/index.html', {'avg_grades': avg()})
 
 
 class RatingCreateView(CreateView):
