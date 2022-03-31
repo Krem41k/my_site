@@ -18,7 +18,7 @@ def avg():
         for g in grades:
             temp_for_grade.append(g.grade)
         if len(temp_for_grade) > 0:
-            avg_grades[p.username] = statistics.fmean(temp_for_grade)
+            avg_grades[p.username] = round(statistics.fmean(temp_for_grade), 2)
     return avg_grades
 
 
@@ -30,7 +30,6 @@ class TeacherListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['avg_grades'] = avg()
-        print(context['avg_grades'])
         return context
 
 
@@ -42,5 +41,8 @@ class RatingCreateView(CreateView):
 
 
 def rating_detail(request, user):
-    u = Rating.objects.filter(user__username=user)
-    return render(request, 'rating/details_view.html', {'data': u})
+    comments = Rating.objects.filter(user__username=user)
+    u = CustomUser.objects.filter(username=user).first()
+    avg_grade = avg().get(u.username)
+    return render(request, 'rating/details_view.html', {'comments': comments, 'avg_grade': avg_grade,
+                                                        'username': u.username})
