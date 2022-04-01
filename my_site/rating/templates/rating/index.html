@@ -6,8 +6,10 @@
 <div class="features">
     <h1>Добро пожаловать на рейтинг пользователей</h1>
 </div>
+{% if user.is_authenticated%}
 <a class="btn btn-primary" href="{% url 'create_rating' %}" role="button">Оценить пользователя</a>
 <br>
+{%endif%}
 <b>Список средних оценок</b>
 {%for user, grades in avg_grades.items%}
 <p><a href="{% url 'detail_rating' user %}"> {{user}}</a>: {{grades}}</p>

@@ -13,7 +13,7 @@
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="{% url 'home' %}" class="nav-link px-2 link-secondary">Главная страница</a></li>
-            {% if user.is_authenticated and user.is_teacher is False%}
+            {% if user.is_authenticated%}
             <li><a href="{% url 'timetable' user.group %}" class="nav-link px-2 link-dark">Расписание</a></li>
             {% endif %}
             <li><a href="{% url 'rating' %}" class="nav-link px-2 link-dark">Рейтинг пользователей</a></li>
