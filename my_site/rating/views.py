@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from main.models import CustomUser
+
+from .forms import RatingForm
 from .models import Rating
 
 
@@ -28,9 +30,8 @@ def rating_list(request):
 
 
 class RatingCreateView(CreateView):
-    model = Rating
+    form_class = RatingForm
     template_name = 'rating/create_rating.html'
-    fields = ['grade', 'comment', 'user']
     success_url = reverse_lazy('rating')
 
 
