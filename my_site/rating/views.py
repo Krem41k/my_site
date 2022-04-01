@@ -2,7 +2,7 @@ import statistics
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import CreateView
 
 from main.models import CustomUser
 from .models import Rating
@@ -10,7 +10,7 @@ from .models import Rating
 
 def avg():
     avg_grades = {}
-    peoples = CustomUser.objects.all().order_by('username')
+    peoples = CustomUser.objects.all()
     temp_for_grade = []
     for p in peoples:
         temp_for_grade.clear()
@@ -19,7 +19,8 @@ def avg():
             temp_for_grade.append(g.grade)
         if len(temp_for_grade) > 0:
             avg_grades[p.username] = round(statistics.fmean(temp_for_grade), 2)
-    return avg_grades
+    sorted_avg_grades = dict(sorted(avg_grades.items(), reverse=True, key=lambda item: item[1]))
+    return sorted_avg_grades
 
 
 def rating_list(request):
