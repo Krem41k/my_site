@@ -6,4 +6,5 @@ urlpatterns = [
     path('', include('main.urls')),
     path('timetable/', include('timetable.urls')),
     path('rating/', include('rating.urls')),
+    path('library/', include('library.urls')),
 ]
