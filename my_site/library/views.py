@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
+from .forms import DocumentForm
 from .models import Document
 
 
@@ -12,7 +12,6 @@ class DocumentListView(ListView):
 
 
 class DocumentCreateView(CreateView):
-    model = Document
+    form_class = DocumentForm
     template_name = 'library/create_document.html'
     success_url = reverse_lazy('library')
-    fields = ['title', 'author', 'document']
