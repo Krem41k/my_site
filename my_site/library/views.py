@@ -15,3 +15,4 @@ class DocumentCreateView(CreateView):
     model = Document
     template_name = 'library/create_document.html'
     success_url = reverse_lazy('library')
+    fields = ['title', 'author', 'document']

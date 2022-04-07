@@ -4,10 +4,14 @@
 
 {% block content %}
 <div class="features">
-    <h1>Добро пожаловать на рейтинг пользователей</h1>
+    <h1>Библиотека</h1>
 </div>
-<b>Библиотека</b>
+<a class="btn btn-primary" href="{% url 'create_document' %}" role="button">Добавить файл</a>
+<br>
 {%for doc in documents%}
-<p>{{doc}}</p>
+<p>Название: {{doc.title}}</p>
+<p>Автор: {{doc.author}}</p>
+<a href="{{doc.document.url}}" download="">Скачать документ</a><br>
+<br>
 {%endfor%}
 {% endblock %}
