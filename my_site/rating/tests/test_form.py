@@ -3,7 +3,6 @@ from django.test import TestCase
 from rating.forms import RatingForm
 
 from main.models import CustomUser
-from rating.models import Rating
 
 
 class TestRatingForm(TestCase):
