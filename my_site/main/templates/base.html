@@ -23,7 +23,7 @@
 
         <div class="col-md-3 text-end">
             {% if user.is_authenticated %}
-            <p>Привет, {{ user.username }}!</p>
+            <p><a href="{% url 'profile_detail' user.username%}">Профиль</a></p>
             <p><a href="{% url 'logout' %}">Выйти</a></p>
             {% else %}
             <a href="{% url 'signup' %}" type="button" class="btn btn-outline-primary me-2">Регистрация</a>

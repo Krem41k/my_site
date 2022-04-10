@@ -1,8 +1,8 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import RegisterUserForm
+from .models import CustomUser
 
 
 def index(request):
@@ -15,4 +15,6 @@ class SignUpView(generic.CreateView):
     template_name = 'main/signup.html'
 
 
-
+def profile_detail(request, username):
+    user = CustomUser.objects.filter(username=username).first()
+    return render(request, 'main/profile_detail.html', {'user': user})
