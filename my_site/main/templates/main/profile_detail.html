@@ -4,11 +4,12 @@
 
 {% block content %}
 <div class="features">
-    <h1>{{user.username}}</h1>
+    <h1>{{user.first_name}} {{user.last_name}}</h1>
 </div>
 <b>Ваши данные</b>
-<p>{{user.email}}</p>
-<p>{{user.is_teacher}}</p>
-<p>{{user.university}}</p>
-<p>{{user.group}}</p>
+<p>Email: {{user.email}}</p>
+<p>Место обучения: {{user.university}}</p>
+{% if user.group|length %}
+<p>Группа: {{user.group}}</p>
+{%endif%}
 {% endblock %}

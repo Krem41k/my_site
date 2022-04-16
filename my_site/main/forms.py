@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from django.forms import TextInput, EmailInput, PasswordInput, CheckboxInput
+from django.forms import TextInput, EmailInput, PasswordInput
 
 from .models import CustomUser
 
@@ -10,20 +10,33 @@ class RegisterUserForm(UserCreationForm):
                 'class': 'form-control',
                 'placeholder': 'Логин'
             }))
+
     password1 = forms.CharField(label='Пароль', widget=PasswordInput({
                 'class': 'form-control',
                 'placeholder': 'Пароль'
             }))
+
     password2 = forms.CharField(label='Подтверждение пароля', widget=PasswordInput({
         'class': 'form-control',
         'placeholder': 'Подтверждение пароля'
     }))
+
+    first_name = forms.CharField(label='Имя', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Имя'
+    }))
+
+    last_name = forms.CharField(label='Фамилия', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Фамилия'
+    }))
+
     email = forms.EmailField(label='Email', widget=EmailInput({
                 'class': 'form-control',
                 'placeholder': 'Email'
             }))
 
-    is_teacher = forms.BooleanField(label='Вы учитель?')
+    is_teacher = forms.BooleanField(label='Вы учитель?', required=False)
 
     university = forms.CharField(label='Университет', widget=TextInput({
         'class': 'form-control',
@@ -38,9 +51,9 @@ class RegisterUserForm(UserCreationForm):
     group = forms.CharField(label='Группа', widget=TextInput({
         'class': 'form-control',
         'placeholder': 'Группа'
-    }))
+    }), required=False)
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'password1', 'password2', 'email', 'is_teacher',
-                  'university', 'faculty', 'group']
+        fields = ['username', 'password1', 'password2', 'first_name', 'last_name',
+                  'email', 'is_teacher', 'university', 'faculty', 'group']
