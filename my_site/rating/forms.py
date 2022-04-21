@@ -14,7 +14,8 @@ class RatingForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Оценка'
             }))
-    user = forms.ModelChoiceField(queryset=CustomUser.objects.all())
+    user = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.Select(
+        attrs={'class': 'form-control'}))
 
     class Meta:
         model = Rating

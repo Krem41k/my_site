@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}Инфомарция о пользователе{% endblock %}
+{% block title %}Информация о пользователе{% endblock %}
 
 {% block content %}
 <div class="features">
     <h1>{{user.first_name}} {{user.last_name}}</h1>
 </div>
 <b>Ваши данные</b>
+<a href='{% url 'profile_edit' user.pk %}'>Изменить данные</a>
 <p>Email: {{user.email}}</p>
 <p>Место обучения: {{user.university}}</p>
-{% if user.group|length %}
+<p>Факультет: {{user.faculty}}</p>
+{% if user.is_teacher is False %}
 <p>Группа: {{user.group}}</p>
 {%endif%}
 {% endblock %}
