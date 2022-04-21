@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.forms import TextInput, EmailInput, PasswordInput
 
@@ -57,3 +57,8 @@ class RegisterUserForm(UserCreationForm):
         model = CustomUser
         fields = ['username', 'password1', 'password2', 'first_name', 'last_name',
                   'email', 'is_teacher', 'university', 'faculty', 'group']
+
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))

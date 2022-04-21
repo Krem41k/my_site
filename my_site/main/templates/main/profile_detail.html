@@ -6,8 +6,8 @@
 <div class="features">
     <h1>{{user.first_name}} {{user.last_name}}</h1>
 </div>
-<b>Ваши данные</b>
-<a href='{% url 'profile_edit' user.pk %}'>Изменить данные</a>
+<b>Ваши данные</b><br>
+<a href="{% url 'profile_edit' user.pk %}">Изменить данные</a>
 <p>Email: {{user.email}}</p>
 <p>Место обучения: {{user.university}}</p>
 <p>Факультет: {{user.faculty}}</p>

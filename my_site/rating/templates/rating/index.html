@@ -10,8 +10,14 @@
 <a class="btn btn-primary" href="{% url 'create_rating' %}" role="button">Оценить пользователя</a>
 <br>
 {%endif%}
-<b>Список средних оценок</b>
-{%for user, grades in avg_grades.items%}
-<p><a href="{% url 'detail_rating' user %}"> {{user}}</a>: {{grades}}</p>
-{%endfor%}
+<div class="container mt-5">
+    <h2>Рейтинг пользователей</h2>
+    {%for user, grades in avg_grades.items%}
+    <div class="alert alert-info mt-2">
+        <p>Пользователь {{user}}: {{grades}}</p>
+        <p><a href="{% url 'detail_rating' user %}">Посмотреть комментарии</a></p>
+        <br>
+    </div>
+    {%endfor%}
+</div>
 {% endblock %}

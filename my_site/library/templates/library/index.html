@@ -7,11 +7,14 @@
     <h1>Библиотека</h1>
 </div>
 <a class="btn btn-primary" href="{% url 'create_document' %}" role="button">Добавить файл</a>
-<br>
-{%for doc in documents%}
-<p>Название: {{doc.title}}</p>
-<p>Автор: {{doc.author}}</p>
-<a href="{{doc.document.url}}" download="">Скачать документ</a><br>
-<br>
-{%endfor%}
+<div class="container mt-5">
+    {%for doc in documents%}
+    <div class="alert alert-info mt-2">
+        <p>Название: {{doc.title}}</p>
+        <p>Автор: {{doc.author}}</p>
+        <a href="{{doc.document.url}}" download="">Скачать документ</a><br>
+        <br>
+    </div>
+    {%endfor%}
+</div>
 {% endblock %}
