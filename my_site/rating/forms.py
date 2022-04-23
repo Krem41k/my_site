@@ -6,15 +6,15 @@ from .models import Rating
 
 
 class RatingForm(forms.ModelForm):
-    comment = forms.CharField(widget=forms.Textarea({
+    comment = forms.CharField(label='Комментарий', widget=forms.Textarea({
                 'class': 'form-control',
                 'placeholder': 'Комментарий'
             }))
-    grade = forms.IntegerField(widget=forms.NumberInput({
+    grade = forms.IntegerField(label='Оценка', widget=forms.NumberInput({
                 'class': 'form-control',
                 'placeholder': 'Оценка'
             }))
-    user = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.Select(
+    user = forms.ModelChoiceField(label='Пользователь', queryset=CustomUser.objects.all(), widget=forms.Select(
         attrs={'class': 'form-control'}))
 
     class Meta:

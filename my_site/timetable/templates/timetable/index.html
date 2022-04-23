@@ -4,11 +4,16 @@
 
 {% block content %}
 <div class="features">
-    <h1>Добро пожаловать в ваше расписание</h1>
+    <h1>Ваше расписание</h1>
 </div>
-
+<!--{%for day in days%}-->
+<!--        <p>{{day}}</p>-->
+<!--{%endfor%}-->
+<!--{%for time in times%}-->
+<!--        <p>{{time}}</p>-->
+<!--{%endfor%}-->
 <div class="container mt-5">
-    <h2>Рейтинг пользователей</h2>
+    <h2></h2>
     {%for item in data%}
     <div class="alert alert-info mt-2">
         <p>{{item}}</p>

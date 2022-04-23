@@ -7,11 +7,15 @@
     <h1>Библиотека</h1>
 </div>
 <a class="btn btn-primary" href="{% url 'create_document' %}" role="button">Добавить файл</a>
+<form action="{% url 'search_results' %}" method="get">
+  <input name="q" type="text" placeholder="Поиск...">
+</form>
 <div class="container mt-5">
     {%for doc in documents%}
     <div class="alert alert-info mt-2">
         <p>Название: {{doc.title}}</p>
         <p>Автор: {{doc.author}}</p>
+        <p>Описание: {{doc.description}}</p>
         <a href="{{doc.document.url}}" download="">Скачать документ</a><br>
         <br>
     </div>

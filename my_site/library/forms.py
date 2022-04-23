@@ -12,6 +12,10 @@ class DocumentForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Автор'
             }))
+    description = forms.CharField(label='Описание', widget=forms.Textarea({
+        'class': 'form-control',
+        'placeholder': 'Краткое описание'
+    }))
     document = forms.FileField(label='Документ', widget=forms.FileInput({
                 'class': 'form-control',
                 'placeholder': 'Файл'
@@ -19,4 +23,4 @@ class DocumentForm(forms.ModelForm):
 
     class Meta:
         model = Document
-        fields = ('title', 'author', 'document',)
+        fields = '__all__'
