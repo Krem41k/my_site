@@ -5,6 +5,7 @@
 {% block content %}
 <div class="features">
     <h1>Результаты поиска</h1>
+    <a href="{% url 'library' %}" type="button" class="btn btn-danger">Назад</a>
 </div>
 <div class="container mt-5">
     {%for doc in object_list%}

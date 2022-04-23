@@ -5,6 +5,7 @@
 {% block content %}
 <div class="features">
     <h1>Рейтинг пользователя {{username}}: {{avg_grade}}</h1>
+    <a href="{% url 'rating' %}" type="button" class="btn btn-danger">Назад</a>
 </div>
 <b>Комментарии о пользователе</b>
 {%for comment in comments%}
