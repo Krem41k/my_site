@@ -11,6 +11,10 @@ class DocumentListView(ListView):
     template_name = 'library/index.html'
     context_object_name = 'documents'
 
+    def get_ordering(self):
+        ordering = self.request.GET.get('orderby', 'title')
+        return ordering
+
 
 class DocumentCreateView(CreateView):
     form_class = DocumentForm

@@ -8,7 +8,21 @@
 </div>
 <a class="btn btn-primary" href="{% url 'create_document' %}" role="button">Добавить файл</a>
 <form action="{% url 'search_document_results' %}" method="get">
-  <input name="q" type="text" placeholder="Поиск...">
+    <input name="q" type="text" placeholder="Поиск...">
+</form>
+
+<form action="{% url 'library' %}" method="get">
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Сортировка
+        </button>
+        <ul class="dropdown-menu">
+            <li><button class="btn btn-secondary" type="submit" name="orderby" value="title">По заголовку</button></li>
+            <li><button class="btn btn-secondary" type="submit" name="orderby" value="-title">По заголовку в обратном порядке</button></li>
+            <li><button class="btn btn-secondary" type="submit" name="orderby" value="author">По автору</button></li>
+            <li><button class="btn btn-secondary" type="submit" name="orderby" value="-author">По автору в обратном порядке</button></li>
+        </ul>
+    </div>
 </form>
 <div class="container mt-5">
     {%for doc in documents%}
