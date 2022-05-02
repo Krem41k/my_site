@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Дисциплины{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Дисциплины</h1>
+    <a href="{% url 'courses' %}" type="button" class="btn btn-danger">Назад</a>
+</div>
+<div class="container mt-5">
+    {%for course in object_list%}
+    <div class="alert alert-info mt-2">
+        <p>Название: {{course.title}}</p>
+        <p>Автор: {{course.user}}</p>
+        <p>Описание: {{course.description}}</p>
+        {{course.id}}
+        <p><a href="{% url 'detail_course' course.id %}">Смотреть подробнее</a></p>
+        <br>
+    </div>
+    {%endfor%}
+</div>
+{% endblock %}

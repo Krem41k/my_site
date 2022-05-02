@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Дисциплины{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>Дисциплины</h1>
+</div>
+<a class="btn btn-primary" href="{% url 'create_course' %}" role="button">Создать дисциплину</a>
+<form action="{% url 'search_course_results' %}" method="get">
+    <input name="q" type="text" placeholder="Поиск...">
+</form>
+<div class="container mt-5">
+    {%for course in courses%}
+    <div class="alert alert-info mt-2">
+        <p>Название: {{course.title}}</p>
+        <p>Автор: {{course.user}}</p>
+        <p>Описание: {{course.description}}</p>
+        {{course.id}}
+        <p><a href="{% url 'detail_course' course.id %}">Смотреть подробнее</a></p>
+        <br>
+    </div>
+    {%endfor%}
+</div>
+{% endblock %}

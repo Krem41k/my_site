@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Страница курса{% endblock %}
+
+{% block content %}
+<div class="features">
+    <h1>{{object.title}}</h1>
+    <a class="btn btn-primary" href="{% url 'create_lesson' %}" role="button">Создать урок</a>
+    <a href="{% url 'courses' %}" type="button" class="btn btn-danger">Назад</a>
+</div>
+<b>Информация о курсе</b>
+{{course.user.username}}
+{{course.title}}
+{{course.description}}
+{%for lesson in lessons%}
+<p>{{lesson.number}}</p>
+<p>{{lesson.name}}</p>
+<p>{{lesson.content}}</p>
+<a href="{{lesson.material.url}}" download="">Скачать материал</a><br>
+{%endfor%}
+{% endblock %}
