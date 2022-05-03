@@ -1,6 +1,7 @@
 import statistics
 
-from django.shortcuts import render
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
@@ -29,10 +30,16 @@ def rating_list(request):
     return render(request, 'rating/index.html', {'avg_grades': avg()})
 
 
-class RatingCreateView(CreateView):
+class RatingCreateView(UserPassesTestMixin, CreateView):
     form_class = RatingForm
     template_name = 'rating/create_rating.html'
     success_url = reverse_lazy('rating')
+
+    def test_func(self):
+        return self.request.user.is_teacher is False
+
+    def handle_no_permission(self):
+        return redirect('rating')
 
 
 def rating_detail(request, user):

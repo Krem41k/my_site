@@ -6,9 +6,22 @@
 <div class="features">
     <h1>Дисциплины</h1>
 </div>
+{% if user.is_teacher is True %}
 <a class="btn btn-primary" href="{% url 'create_course' %}" role="button">Создать дисциплину</a>
+{%endif%}
 <form action="{% url 'search_course_results' %}" method="get">
     <input name="q" type="text" placeholder="Поиск...">
+</form>
+<form action="{% url 'courses' %}" method="get">
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Сортировка
+        </button>
+        <ul class="dropdown-menu">
+            <li><button class="btn btn-secondary" type="submit" name="orderby" value="title">По заголовку</button></li>
+            <li><button class="btn btn-secondary" type="submit" name="orderby" value="-title">По заголовку в обратном порядке</button></li>
+        </ul>
+    </div>
 </form>
 <div class="container mt-5">
     {%for course in courses%}
