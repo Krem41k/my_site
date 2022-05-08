@@ -10,14 +10,44 @@
 <a class="btn btn-primary" href="{% url 'create_rating' %}" role="button">Оценить пользователя</a>
 <br>
 {%endif%}
+<form action="{% url 'rating' %}" method="get">
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Сортировка
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <button class="btn btn-secondary" type="submit" name="orderby" value="average_rating">По рейтингу
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-secondary" type="submit" name="orderby" value="-average_rating">По рейтингу в
+                    обратном порядке
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-secondary" type="submit" name="orderby" value="username">По имени пользователя
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-secondary" type="submit" name="orderby" value="-username">По имени пользователя в
+                    обратном порядке
+                </button>
+            </li>
+        </ul>
+    </div>
+</form>
 <div class="container mt-5">
     <h2>Рейтинг пользователей</h2>
-    {%for user, grades in avg_grades.items%}
+    {%for u_a in users_avg%}
+    {%if u_a.average_rating%}
     <div class="alert alert-info mt-2">
-        <p>Пользователь {{user}}: {{grades}}</p>
-        <p><a href="{% url 'detail_rating' user %}">Посмотреть комментарии</a></p>
+        <p>Пользователь {{u_a}}: {{u_a.average_rating|floatformat:2 }}</p>
+        <p><a href="{% url 'detail_rating' u_a %}">Посмотреть комментарии</a></p>
+        <a href="{% url 'rate_user' u_a%}" type="button" class="btn btn-primary">Оценить пользователя</a>
         <br>
     </div>
+    {%endif%}
     {%endfor%}
 </div>
 {% endblock %}

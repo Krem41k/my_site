@@ -20,3 +20,18 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ('grade', 'comment', 'user',)
+
+
+class RatingDetailForm(forms.ModelForm):
+    comment = forms.CharField(label='Комментарий', widget=forms.Textarea({
+                'class': 'form-control',
+                'placeholder': 'Комментарий'
+            }))
+    grade = forms.IntegerField(label='Оценка', widget=forms.NumberInput({
+                'class': 'form-control',
+                'placeholder': 'Оценка'
+            }))
+
+    class Meta:
+        model = Rating
+        fields = ('grade', 'comment',)

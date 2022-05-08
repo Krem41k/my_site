@@ -1,33 +1,22 @@
-import statistics
-
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Avg, Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from main.models import CustomUser
 
-from .forms import RatingForm
-from .models import Rating
+from .forms import RatingForm, RatingDetailForm
 
 
-def avg():
-    avg_grades = {}
-    peoples = CustomUser.objects.all()
-    temp_for_grade = []
-    for p in peoples:
-        temp_for_grade.clear()
-        grades = p.rating_set.all()
-        for g in grades:
-            temp_for_grade.append(g.grade)
-        if len(temp_for_grade) > 0:
-            avg_grades[p.username] = round(statistics.fmean(temp_for_grade), 2)
-    sorted_avg_grades = dict(sorted(avg_grades.items(), reverse=True, key=lambda item: item[1]))
-    return sorted_avg_grades
+class RatingListView(ListView):
+    queryset = CustomUser.objects.annotate(average_rating=Avg('rating__grade'))
+    template_name = 'rating/index.html'
+    context_object_name = 'users_avg'
 
-
-def rating_list(request):
-    return render(request, 'rating/index.html', {'avg_grades': avg()})
+    def get_ordering(self):
+        ordering = self.request.GET.get('orderby', '-average_rating')
+        return ordering
 
 
 class RatingCreateView(UserPassesTestMixin, CreateView):
@@ -43,7 +32,23 @@ class RatingCreateView(UserPassesTestMixin, CreateView):
 
 
 def rating_detail(request, user):
-    comments = Rating.objects.filter(user__username=user)
-    avg_grade = avg().get(user)
-    return render(request, 'rating/details_view.html', {'comments': comments, 'avg_grade': avg_grade,
-                                                        'username': user})
+    comments = CustomUser.objects.get(username=user).rating_set.all()
+    users = CustomUser.objects.annotate(average_rating=Avg('rating__grade')).get(username=user)
+    return render(request, 'rating/details_view.html', {'comments': comments, 'users': users})
+
+
+class DetailRatingCreateView(UserPassesTestMixin, CreateView):
+    form_class = RatingDetailForm
+    template_name = 'rating/create_rating.html'
+    success_url = reverse_lazy('rating')
+
+    def form_valid(self, form):
+        user = CustomUser.objects.get(username=self.kwargs['user'])
+        form.instance.user = user
+        return super(DetailRatingCreateView, self).form_valid(form)
+
+    def test_func(self):
+        return self.request.user.is_teacher is False
+
+    def handle_no_permission(self):
+        return redirect('rating')
