@@ -19,10 +19,9 @@
 <div class="container mt-5">
     {%for lesson in lessons%}
     <div class="alert alert-info mt-2">
-        <p>{{lesson.number}}</p>
-        <p>{{lesson.name}}</p>
-        <p>{{lesson.content}}</p>
-        <a href="{{lesson.material.url}}" download="">Скачать материал</a><br>
+        <p>Урок №{{lesson.number}}</p>
+        <p>Название: {{lesson.name}}</p>
+        <p><a href="{% url 'detail_lesson' lesson.id %}">Смотреть подробнее</a></p>
     </div>
     {%endfor%}
 </div>

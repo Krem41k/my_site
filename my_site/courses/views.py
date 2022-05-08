@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from .forms import CourseForm, LessonForm
 from .models import Course, Lesson
@@ -47,10 +47,24 @@ class SearchResultsView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         object_list = Course.objects.filter(
-            Q(title__icontains=query) | Q(description__icontains=query)
-            | Q(user__username__icontains=query) | Q(pk__icontains=query)
+            Q(title__icontains=query) | Q(user__username__icontains=query) | Q(pk__icontains=query)
         )
         return object_list
+
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    template_name = 'courses/course_edit.html'
+    fields = '__all__'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('detail_course', kwargs={'pk': self.kwargs['pk']})
+
+
+class CourseDeleteView(DeleteView):
+    model = Course
+    template_name = 'courses/course_delete.html'
+    success_url = reverse_lazy('courses')
 
 
 class LessonCreateView(UserPassesTestMixin, CreateView):
@@ -72,16 +86,24 @@ class LessonCreateView(UserPassesTestMixin, CreateView):
         return reverse_lazy('detail_course', kwargs={'pk': self.kwargs['pk']})
 
 
-class CourseUpdateView(UpdateView):
-    model = Course
-    template_name = 'courses/course_edit.html'
+class LessonDetailView(DetailView):
+    model = Lesson
+    template_name = 'lessons/detail_lesson.html'
+
+
+class LessonUpdateView(UpdateView):
+    model = Lesson
+    template_name = 'lessons/lesson_edit.html'
     fields = '__all__'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('detail_course', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('detail_lesson', kwargs={'pk': self.kwargs['pk']})
 
 
-class CourseDeleteView(DeleteView):
-    model = Course
-    template_name = 'courses/course_delete.html'
-    success_url = reverse_lazy('courses')
+class LessonDeleteView(DeleteView):
+    model = Lesson
+    template_name = 'lessons/lesson_delete.html'
+
+    def get_success_url(self, **kwargs):
+        pk_course = Lesson.objects.get(id=self.kwargs['pk']).course.id
+        return reverse_lazy('detail_course', kwargs={'pk': pk_course})

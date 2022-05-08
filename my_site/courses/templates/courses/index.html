@@ -32,10 +32,10 @@
 <div class="container mt-5">
     {%for course in courses%}
     <div class="alert alert-info mt-2">
+        <p>Курс: №{{course.id}}</p>
         <p>Название: {{course.title}}</p>
         <p>Автор: {{course.user}}</p>
         <p>Описание: {{course.description}}</p>
-        {{course.id}}
         <p><a href="{% url 'detail_course' course.id %}">Смотреть подробнее</a></p>
         <br>
     </div>
