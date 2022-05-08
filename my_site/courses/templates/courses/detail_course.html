@@ -14,10 +14,16 @@
 {{course.user.username}}
 {{course.title}}
 {{course.description}}
-{%for lesson in lessons%}
-<p>{{lesson.number}}</p>
-<p>{{lesson.name}}</p>
-<p>{{lesson.content}}</p>
-<a href="{{lesson.material.url}}" download="">Скачать материал</a><br>
-{%endfor%}
+<a href="{% url 'course_edit' course.id%}" type="button" class="btn btn-info">Обновить курс</a>
+<a href="{% url 'course_delete' course.id%}" type="button" class="btn btn-warning">Удалить курс</a>
+<div class="container mt-5">
+    {%for lesson in lessons%}
+    <div class="alert alert-info mt-2">
+        <p>{{lesson.number}}</p>
+        <p>{{lesson.name}}</p>
+        <p>{{lesson.content}}</p>
+        <a href="{{lesson.material.url}}" download="">Скачать материал</a><br>
+    </div>
+    {%endfor%}
+</div>
 {% endblock %}
