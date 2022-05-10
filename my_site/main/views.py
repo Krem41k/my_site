@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 
-from .forms import RegisterUserForm, LoginUserForm, UpdateUserForm
+from .forms import LoginUserForm, UpdateUserForm, RegisterStudentForm, RegisterTeacherForm
 from .models import CustomUser
 
 
@@ -11,10 +11,28 @@ def index(request):
     return render(request, 'main/index.html')
 
 
-class SignUpView(CreateView):
-    form_class = RegisterUserForm
+def choice_registration(request):
+    return render(request, 'main/choice_registration.html')
+
+
+class SignUpStudentView(CreateView):
+    form_class = RegisterStudentForm
     success_url = reverse_lazy('login')
     template_name = 'main/signup.html'
+
+    def form_valid(self, form):
+        form.instance.is_teacher = False
+        return super(SignUpStudentView, self).form_valid(form)
+
+
+class SignUpTeacherView(CreateView):
+    form_class = RegisterTeacherForm
+    success_url = reverse_lazy('login')
+    template_name = 'main/signup.html'
+
+    def form_valid(self, form):
+        form.instance.is_teacher = True
+        return super(SignUpTeacherView, self).form_valid(form)
 
 
 class ProfileLogin(LoginView):

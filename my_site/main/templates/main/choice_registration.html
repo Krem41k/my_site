@@ -1,0 +1,7 @@
+{% extends  'base.html' %}
+{% block title %}Выбор регистрации{% endblock %}
+{% block content %}
+<h2>Выбрать регистрацию</h2>
+    <a href="{% url 'signup_student' %}" type="button" class="btn btn-info">Регистрация для учеников</a>
+  <a href="{% url 'signup_teacher' %}" type="button" class="btn btn-info">Регистрация для учителей</a>
+{% endblock content %}
