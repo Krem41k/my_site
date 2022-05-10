@@ -4,14 +4,17 @@
 
 {% block content %}
 <div class="features">
-    <h1>{{user.first_name}} {{user.last_name}}</h1>
+    <h1>{{profile.first_name}} {{profile.last_name}}</h1>
 </div>
-<b>Ваши данные</b><br>
-<a href="{% url 'profile_edit' user.pk %}">Изменить данные</a>
-<p>Email: {{user.email}}</p>
-<p>Место обучения: {{user.university}}</p>
-<p>Факультет: {{user.faculty}}</p>
-{% if user.is_teacher is False %}
-<p>Группа: {{user.group}}</p>
+<a href="{% url 'rate_user' profile.username%}" type="button" class="btn btn-primary">Оценить пользователя</a>
+<b>Данные пользователя</b><br>
+{% if user.pk == profile.pk%}
+<a href="{% url 'profile_edit' profile.pk %}">Изменить данные</a>
+{%endif%}
+<p>Email: {{profile.email}}</p>
+<p>Место обучения: {{profile.university}}</p>
+<p>Факультет: {{profile.faculty}}</p>
+{% if profile.is_teacher is False%}
+<p>Группа: {{profile.group}}</p>
 {%endif%}
 {% endblock %}

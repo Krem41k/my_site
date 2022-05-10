@@ -4,6 +4,8 @@
 <h2>Удалить курс</h2>
 <form method="post">
   {% csrf_token %}
-  <button type="submit">Удалить</button>
+  <p>Вы действительно хотите удалить курс {{course.title}}?</p>
+  <button type="submit" class="btn btn-warning">Удалить</button>
+  <a href="{% url 'detail_course' course.id%}" type="button" class="btn btn-danger">Назад</a>
 </form>
 {% endblock content %}

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import RegisterUserForm, LoginUserForm, UpdateUserForm
 from .models import CustomUser
 
 
@@ -25,10 +25,12 @@ class ProfileLogin(LoginView):
 class ProfileUpdateView(UpdateView):
     model = CustomUser
     template_name = 'main/profile_edit.html'
-    fields = ['first_name', 'last_name', 'email', 'university', 'faculty', 'group']
-    success_url = reverse_lazy('home')
+    form_class = UpdateUserForm
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('profile_detail', kwargs={'username': self.request.user})
 
 
 def profile_detail(request, username):
-    user = CustomUser.objects.filter(username=username).first()
-    return render(request, 'main/profile_detail.html', {'user': user})
+    profile = CustomUser.objects.get(username=username)
+    return render(request, 'main/profile_detail.html', {'profile': profile})

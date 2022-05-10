@@ -1,11 +1,10 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from .forms import CourseForm, LessonForm
 from .models import Course, Lesson
+from .utils import TeacherPassesTestMixin
 
 
 class CourseListView(ListView):
@@ -18,7 +17,7 @@ class CourseListView(ListView):
         return ordering
 
 
-class CourseCreateView(UserPassesTestMixin, CreateView):
+class CourseCreateView(TeacherPassesTestMixin, CreateView):
     form_class = CourseForm
     template_name = 'courses/create_course.html'
     success_url = reverse_lazy('courses')
@@ -27,17 +26,16 @@ class CourseCreateView(UserPassesTestMixin, CreateView):
         form.instance.user = self.request.user
         return super(CourseCreateView, self).form_valid(form)
 
-    def test_func(self):
-        return self.request.user.is_teacher
 
-    def handle_no_permission(self):
-        return redirect('courses')
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'courses/detail_course.html'
 
-
-def course_detail(request, pk):
-    course = Course.objects.get(id=pk)
-    lessons = course.lesson_set.all()
-    return render(request, 'courses/detail_course.html', {'course': course, 'lessons': lessons})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course = Course.objects.get(id=self.kwargs['pk'])
+        context['lessons'] = course.lesson_set.all()
+        return context
 
 
 class SearchResultsView(ListView):
@@ -52,22 +50,22 @@ class SearchResultsView(ListView):
         return object_list
 
 
-class CourseUpdateView(UpdateView):
+class CourseUpdateView(TeacherPassesTestMixin, UpdateView):
     model = Course
+    form_class = CourseForm
     template_name = 'courses/course_edit.html'
-    fields = '__all__'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('detail_course', kwargs={'pk': self.kwargs['pk']})
 
 
-class CourseDeleteView(DeleteView):
+class CourseDeleteView(TeacherPassesTestMixin, DeleteView):
     model = Course
     template_name = 'courses/course_delete.html'
     success_url = reverse_lazy('courses')
 
 
-class LessonCreateView(UserPassesTestMixin, CreateView):
+class LessonCreateView(TeacherPassesTestMixin, CreateView):
     form_class = LessonForm
     template_name = 'lessons/create_lesson.html'
 
@@ -75,12 +73,6 @@ class LessonCreateView(UserPassesTestMixin, CreateView):
         course = Course.objects.get(id=self.kwargs['pk'])
         form.instance.course = course
         return super(LessonCreateView, self).form_valid(form)
-
-    def test_func(self):
-        return self.request.user.is_teacher
-
-    def handle_no_permission(self):
-        return redirect('courses')
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('detail_course', kwargs={'pk': self.kwargs['pk']})
@@ -91,16 +83,16 @@ class LessonDetailView(DetailView):
     template_name = 'lessons/detail_lesson.html'
 
 
-class LessonUpdateView(UpdateView):
+class LessonUpdateView(TeacherPassesTestMixin, UpdateView):
     model = Lesson
+    form_class = LessonForm
     template_name = 'lessons/lesson_edit.html'
-    fields = '__all__'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('detail_lesson', kwargs={'pk': self.kwargs['pk']})
 
 
-class LessonDeleteView(DeleteView):
+class LessonDeleteView(TeacherPassesTestMixin, DeleteView):
     model = Lesson
     template_name = 'lessons/lesson_delete.html'
 

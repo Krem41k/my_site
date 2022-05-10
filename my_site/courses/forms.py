@@ -5,9 +5,9 @@ from .models import Course, Lesson
 
 class CourseForm(forms.ModelForm):
     title = forms.CharField(label='Название дисциплины', widget=forms.TextInput({
-                'class': 'form-control',
-                'placeholder': 'Название дисциплины'
-            }))
+        'class': 'form-control',
+        'placeholder': 'Название дисциплины'
+    }))
     description = forms.CharField(label='Описание дисциплины', widget=forms.Textarea({
         'class': 'form-control',
         'placeholder': 'Краткое описание'

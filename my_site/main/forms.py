@@ -62,3 +62,39 @@ class RegisterUserForm(UserCreationForm):
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+class UpdateUserForm(forms.ModelForm):
+    first_name = forms.CharField(label='Имя', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Имя'
+    }))
+
+    last_name = forms.CharField(label='Фамилия', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Фамилия'
+    }))
+
+    email = forms.EmailField(label='Email', widget=EmailInput({
+        'class': 'form-control',
+        'placeholder': 'Email'
+    }))
+
+    university = forms.CharField(label='Университет', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Университет'
+    }))
+
+    faculty = forms.CharField(label='Факультет', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Факультет'
+    }))
+
+    group = forms.CharField(label='Группа', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Группа'
+    }), required=False)
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'university', 'faculty', 'group']
