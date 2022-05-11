@@ -8,8 +8,10 @@
         <a href="{% url 'detail_course' object.course.id%}" type="button" class="btn btn-danger">Назад</a>
 </div>
 <b>Информация об уроке</b>
+{% if user.is_teacher is True %}
 <a href="{% url 'lesson_edit' object.id%}" type="button" class="btn btn-info">Обновить урок</a>
 <a href="{% url 'lesson_delete' object.id%}" type="button" class="btn btn-warning">Удалить урок</a>
+{%endif%}
 <div class="container mt-5">
     <p>Название: {{object.name}}</p>
     <p>{{object.content}}</p>

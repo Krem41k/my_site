@@ -14,8 +14,10 @@
 {{course.user.username}}
 {{course.title}}
 {{course.description}}
+{% if user.is_teacher is True %}
 <a href="{% url 'course_edit' course.id%}" type="button" class="btn btn-info">Обновить курс</a>
 <a href="{% url 'course_delete' course.id%}" type="button" class="btn btn-warning">Удалить курс</a>
+{%endif%}
 <div class="container mt-5">
     {%for lesson in lessons%}
     <div class="alert alert-info mt-2">

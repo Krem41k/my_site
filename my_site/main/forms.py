@@ -3,10 +3,10 @@ from django import forms
 from django.forms import TextInput, EmailInput, PasswordInput
 
 from .models import CustomUser
-from .utils import ProfileFormMixin
+from .utils import ProfileFormMixin, CustomUserForm
 
 
-class RegisterStudentForm(ProfileFormMixin):
+class RegisterStudentForm(CustomUserForm, ProfileFormMixin):
     group = forms.CharField(label='Группа', widget=TextInput({
         'class': 'form-control',
         'placeholder': 'Группа'
@@ -18,7 +18,7 @@ class RegisterStudentForm(ProfileFormMixin):
                   'email', 'university', 'faculty', 'group']
 
 
-class RegisterTeacherForm(ProfileFormMixin):
+class RegisterTeacherForm(CustomUserForm, ProfileFormMixin):
     class Meta:
         model = CustomUser
         fields = ['username', 'password1', 'password2', 'first_name', 'last_name',
@@ -30,7 +30,18 @@ class LoginUserForm(AuthenticationForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
-class UpdateUserForm(ProfileFormMixin):
+class UpdateStudentForm(ProfileFormMixin):
+    group = forms.CharField(label='Группа', widget=TextInput({
+        'class': 'form-control',
+        'placeholder': 'Группа'
+    }))
+
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'university', 'faculty', 'group']
+
+
+class UpdateTeacherForm(ProfileFormMixin):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'university', 'faculty']

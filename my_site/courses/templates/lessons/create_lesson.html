@@ -6,6 +6,6 @@
   {% csrf_token %}
   {{ form.as_p }}
   <button class="btn btn-primary" type="submit">Создать</button>
-  <a href="{% url 'courses' %}" type="button" class="btn btn-danger">Назад</a>
+  <a href="{% url 'detail_course' view.kwargs.pk%}" type="button" class="btn btn-danger">Назад</a>
 </form>
 {% endblock content %}

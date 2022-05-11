@@ -7,6 +7,7 @@ from django.views.generic import CreateView, ListView
 from main.models import CustomUser
 
 from .forms import RatingForm, RatingDetailForm
+from .utils import RatingMixinPassesTest
 
 
 class RatingListView(ListView):
@@ -19,16 +20,10 @@ class RatingListView(ListView):
         return ordering
 
 
-class RatingCreateView(UserPassesTestMixin, CreateView):
+class RatingCreateView(RatingMixinPassesTest, CreateView):
     form_class = RatingForm
     template_name = 'rating/create_rating.html'
     success_url = reverse_lazy('rating')
-
-    def test_func(self):
-        return self.request.user.is_teacher is False
-
-    def handle_no_permission(self):
-        return redirect('rating')
 
 
 def rating_detail(request, user):
@@ -37,7 +32,7 @@ def rating_detail(request, user):
     return render(request, 'rating/details_view.html', {'comments': comments, 'users': users})
 
 
-class DetailRatingCreateView(UserPassesTestMixin, CreateView):
+class DetailRatingCreateView(RatingMixinPassesTest, CreateView):
     form_class = RatingDetailForm
     template_name = 'rating/create_rating.html'
     success_url = reverse_lazy('rating')
@@ -46,9 +41,3 @@ class DetailRatingCreateView(UserPassesTestMixin, CreateView):
         user = CustomUser.objects.get(username=self.kwargs['user'])
         form.instance.user = user
         return super(DetailRatingCreateView, self).form_valid(form)
-
-    def test_func(self):
-        return self.request.user.is_teacher is False
-
-    def handle_no_permission(self):
-        return redirect('rating')

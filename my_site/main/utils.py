@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.forms import TextInput, EmailInput, PasswordInput
+from django.shortcuts import redirect
 
 
-class ProfileFormMixin(UserCreationForm):
+class CustomUserForm(UserCreationForm):
     username = forms.CharField(label='Логин', widget=TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Логин'
@@ -19,6 +21,8 @@ class ProfileFormMixin(UserCreationForm):
         'placeholder': 'Подтверждение пароля'
     }))
 
+
+class ProfileFormMixin(forms.ModelForm):
     first_name = forms.CharField(label='Имя', widget=TextInput({
         'class': 'form-control',
         'placeholder': 'Имя'
@@ -44,3 +48,11 @@ class ProfileFormMixin(UserCreationForm):
         'placeholder': 'Факультет'
     }))
 
+
+class ProfileMixinPassesTest(UserPassesTestMixin):
+    def test_func(self):
+        is_yourself = self.request.user.pk == self.kwargs['pk']
+        return is_yourself
+
+    def handle_no_permission(self):
+        return redirect('login')

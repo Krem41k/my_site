@@ -3,35 +3,19 @@ from django import forms
 from main.models import CustomUser
 
 from .models import Rating
+from .utils import RatingMixinForm
 
 
-class RatingForm(forms.ModelForm):
-    comment = forms.CharField(label='Комментарий', widget=forms.Textarea({
-                'class': 'form-control',
-                'placeholder': 'Комментарий'
-            }))
-    grade = forms.IntegerField(label='Оценка', widget=forms.NumberInput({
-                'class': 'form-control',
-                'placeholder': 'Оценка'
-            }))
-    user = forms.ModelChoiceField(label='Пользователь', queryset=CustomUser.objects.all(), widget=forms.Select(
-        attrs={'class': 'form-control'}))
+class RatingForm(RatingMixinForm):
+    user = forms.ModelChoiceField(label='Пользователь', queryset=CustomUser.objects.filter(is_teacher=True),
+                                  widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Rating
         fields = ('grade', 'comment', 'user',)
 
 
-class RatingDetailForm(forms.ModelForm):
-    comment = forms.CharField(label='Комментарий', widget=forms.Textarea({
-                'class': 'form-control',
-                'placeholder': 'Комментарий'
-            }))
-    grade = forms.IntegerField(label='Оценка', widget=forms.NumberInput({
-                'class': 'form-control',
-                'placeholder': 'Оценка'
-            }))
-
+class RatingDetailForm(RatingMixinForm):
     class Meta:
         model = Rating
         fields = ('grade', 'comment',)

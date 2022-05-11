@@ -9,7 +9,7 @@
 <b>Данные пользователя</b><br>
 {% if user.pk == profile.pk%}
 <a href="{% url 'profile_edit' profile.pk %}">Изменить данные</a>
-{% else %}
+{% elif user.is_teacher is False %}
 <a href="{% url 'rate_user' profile.username%}" type="button" class="btn btn-primary">Оценить пользователя</a>
 {%endif%}
 <p>Email: {{profile.email}}</p>

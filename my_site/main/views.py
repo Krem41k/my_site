@@ -3,8 +3,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 
-from .forms import LoginUserForm, UpdateUserForm, RegisterStudentForm, RegisterTeacherForm
+from .forms import LoginUserForm, RegisterStudentForm, RegisterTeacherForm, UpdateStudentForm, UpdateTeacherForm
 from .models import CustomUser
+from .utils import ProfileMixinPassesTest
 
 
 def index(request):
@@ -40,10 +41,17 @@ class ProfileLogin(LoginView):
     template_name = 'registration/login.html'
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(ProfileMixinPassesTest, UpdateView):
     model = CustomUser
     template_name = 'main/profile_edit.html'
-    form_class = UpdateUserForm
+
+    def get_form_class(self):
+        if self.request.user.is_teacher is False:
+            form_class_name = UpdateStudentForm
+            return form_class_name
+        else:
+            form_class_name = UpdateTeacherForm
+            return form_class_name
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('profile_detail', kwargs={'username': self.request.user})
