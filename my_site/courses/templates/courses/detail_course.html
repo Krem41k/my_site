@@ -11,7 +11,7 @@
     <a href="{% url 'courses' %}" type="button" class="btn btn-danger">Назад</a>
 </div>
 <b>Информация о курсе</b>
-{{course.user.username}}
+<a href="{% url 'profile_detail' course.user.username %}">{{course.user.username}}</a>
 {{course.title}}
 {{course.description}}
 {% if user.is_teacher is True %}

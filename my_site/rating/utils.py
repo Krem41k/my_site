@@ -19,8 +19,13 @@ class RatingMixinForm(forms.ModelForm):
 
 class RatingMixinPassesTest(UserPassesTestMixin):
     def test_func(self):
-        is_yourself = self.request.user.username != self.kwargs['user']
-        return self.request.user.is_teacher is False and is_yourself
+        is_yourself = True
+        is_student = False
+        if self.kwargs:
+            is_yourself = self.request.user.username != self.kwargs['user']
+            is_student = CustomUser.objects.get(username=self.kwargs['user']).is_teacher
+
+        return self.request.user.is_teacher is False and is_yourself and is_student
 
     def handle_no_permission(self):
         return redirect('rating')

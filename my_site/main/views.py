@@ -1,4 +1,5 @@
 from django.contrib.auth.views import LoginView
+from django.db.models import Avg
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
@@ -58,5 +59,5 @@ class ProfileUpdateView(ProfileMixinPassesTest, UpdateView):
 
 
 def profile_detail(request, username):
-    profile = CustomUser.objects.get(username=username)
+    profile = CustomUser.objects.annotate(average_rating=Avg('rating__grade')).get(username=username)
     return render(request, 'main/profile_detail.html', {'profile': profile})
